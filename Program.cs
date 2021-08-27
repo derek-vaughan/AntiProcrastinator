@@ -50,15 +50,37 @@ namespace AntiProcrastinator
 
         static void StartWebsiteBlocker(String filePath)
         {
+            ArrayList websitesToBlock = getListOfWebsitesToBlock();
+
+            foreach (var item in websitesToBlock)
+            {
+                Console.WriteLine("Item: " + item);
+            }
+
+            Console.ReadLine(); /////////////////
+
+            Console.WriteLine("Let's get to work.");
+            Console.WriteLine("Blocking...");
+
+            StreamWriter sw = new StreamWriter(filePath, true);
+            String website = "\n 127.0.0.0 www.solitaired.com\n 127.0.0.0 https://www.solitaired.com\n 127.0.0.0 solitaired.com\n 127.0.0.0 https://solitaired.com\n 127.0.0.0 http://solitaired.com\n 127.0.0.0 https://solitaired.com/";
+            sw.Write(website);
+            sw.Close();
+
+            Console.WriteLine("Website has been blocked");
+        }
+
+        static ArrayList getListOfWebsitesToBlock()
+        {
             bool addNewWebsite = true;
             string userInput = "";
             ArrayList websitesToBlock = new ArrayList();
-            
+
             Console.WriteLine("Enter a website name, without the \"www.\" or \".com\", ");
             Console.WriteLine("For example, you can enter: facebook");
             Console.WriteLine("Or, enter an empty string to finish adding websites.");
 
-            while(addNewWebsite)
+            while (addNewWebsite)
             {
                 Console.Write("Website Name: ");
                 userInput = Console.ReadLine();
@@ -77,23 +99,7 @@ namespace AntiProcrastinator
                 }
             }
 
-
-            foreach(var item in websitesToBlock)
-            {
-                Console.WriteLine("Item: " + item);
-            }
-
-            Console.ReadLine(); /////////////////
-
-            Console.WriteLine("Let's get to work.");
-            Console.WriteLine("Blocking...");
-
-            StreamWriter sw = new StreamWriter(filePath, true);
-            String website = "\n 127.0.0.0 www.solitaired.com\n 127.0.0.0 https://www.solitaired.com\n 127.0.0.0 solitaired.com\n 127.0.0.0 https://solitaired.com\n 127.0.0.0 http://solitaired.com\n 127.0.0.0 https://solitaired.com/";
-            sw.Write(website);
-            sw.Close();
-
-            Console.WriteLine("Website has been blocked");
+            return websitesToBlock;
         }
 
         static void EndWebsiteBlocker(String filePath)
@@ -102,11 +108,6 @@ namespace AntiProcrastinator
 
             List<string> lines = File.ReadAllLines(filePath).ToList();
             File.WriteAllLines(filePath, lines.GetRange(0, lines.Count - 6).ToArray());
-        }
-
-        static void TestFunction()
-        {
-            Console.WriteLine("test function");
         }
     }
 }
